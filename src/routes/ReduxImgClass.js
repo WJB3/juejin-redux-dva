@@ -24,8 +24,6 @@ class ReduxImgClass extends React.Component {
     }
 }
 const mapStateToProps=({img})=>{
-    console.log("mapStateToProps")
-    console.log(img)
     return {
         img
     }

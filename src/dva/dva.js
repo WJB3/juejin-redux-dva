@@ -3,12 +3,13 @@ import * as routerRedux from 'react-router-redux';
 import { routerMiddleware, connectRouter, ConnectedRouter } from 'connected-react-router';
 import { createStore,combineReducers,applyMiddleware } from '../model/redux';
 import { Link } from 'react-router-dom';
-import { Provider,connect } from '../model/component';
+import { Provider,connect,ReactReduxContext } from '../model/component';
 import createSagaMiddleware from 'redux-saga';
 //saga的功能 call请求 put触发action select选择等等
 import * as sagaEffects from 'redux-saga/effects';
 import React from 'react';
 import ReactDom from 'react-dom';
+import Plugin, { filterHooks } from './plugins/plugin';
 //废弃
 function __prefix(model){
   
@@ -101,7 +102,11 @@ export default function(opt={}){
         _store:{}
     }
    
- 
+    function use( let plugin=new Plugin();
+    plugin.use(filterHooks(opt));){
+
+    }
+
     function model(m){
         let prefixmodel = prefixResolve(m)
         app._models.push(prefixmodel)
@@ -114,10 +119,21 @@ export default function(opt={}){
         let sagas=getSagas(app);
         let sagaMiddleware = createSagaMiddleware();
         app._store=createStore(reducer,applyMiddleware(routerMiddleware(app._history),sagaMiddleware));
-        console.log(app)
+       
+        
+
+        for(let m of app._models){
+            if(m.subscriptions){
+                for(let key in m.subscriptions){
+                    let subscription=m.subscriptions[key];
+                    subscription({history,dispatch:app._store.dispatch})
+                }
+            }
+        }
+        
         sagas.forEach(sagaMiddleware.run)
-        ReactDom.render(<Provider store={app._store}>
-            <ConnectedRouter history={app._history}>
+        ReactDom.render(<Provider store={app._store} >
+            <ConnectedRouter history={app._history} store={app._store} context={ReactReduxContext}>
                 {app._router({app,history:app._history})}
             </ConnectedRouter>
         </Provider>,document.querySelector(container));

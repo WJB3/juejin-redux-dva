@@ -22,5 +22,11 @@ export default {
         toggle(state,action){
             return { ...state, ...action.payload };
         }
+    },
+    subscriptions:{
+        listener({history,dispatch}){
+            console.log(history)
+            console.log(dispatch)
+        }
     }
 }

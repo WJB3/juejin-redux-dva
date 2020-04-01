@@ -5,10 +5,7 @@ import ReduxImgClass from './routes/ReduxImgClass';
 import { Route , HashRouter,Switch } from 'react-router-dom';
 import  store  from './model/index';
 import { Provider } from 'react-redux';
- 
-store.subscribe(()=>{
-    console.log("state is changing...")
-})
+
 
 ReactDom.render(
     <Provider store={store}>
