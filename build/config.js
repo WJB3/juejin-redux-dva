@@ -33,7 +33,7 @@ module.exports={
     },
     dev_html_template_path:'./src/public/index.ejs',
     dev_html_js_inject:'body',
-    dev_html_title:'吴家宝搭建的React简易项目',
+    dev_html_title:'React简易项目',
     dev_html_ico:'src/assets/favicon-flash.ico',
     dev_is_useSourceMap:true
 }

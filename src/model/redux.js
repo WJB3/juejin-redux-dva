@@ -1,61 +1,3 @@
-import createSagaMiddleware from 'redux-saga';
-
- 
-import { watcher } from './effect';
-
-const initialState = {
-    input: {
-        inputValue: "initial-redux"
-    },
-    text: {
-        textValue: "默认文字"
-    },
-    data:[]
-}
-
-//actions的类型 redux三要素之一action
-const actionsType = {
-    INPUT_CHANGE: "INPUT_CHANGE",
-    TEXT_CHANGE: "TEXT_CHANGE",
-    FETCH_DATA:"FETCH_DATA",
-    CONCAT_DATA:"CONCAT_DATA"
-}
-
-function inputReducer(state, action) {
-    switch (action.type) {
-        case actionsType.INPUT_CHANGE:
-            const newState = state;
-            newState.inputValue = action.inputValue;
-            return newState;
-        default:
-            return state;
-    }
-}
-
-function textReducer(state, action) {
-    switch (action.type) {
-        case actionsType.TEXT_CHANGE:
-            const newState = state;
-            newState.textValue = action.textValue;
-            return newState;
-        default:
-            return state;
-    }
-}
-
-function dataReducer(state, action) {
-    console.log("dataReducer")
-    console.log(action)
-    switch (action.type) {
-        case actionsType.FETCH_DATA:
-            return state;
-        case actionsType.CONCAT_DATA:
-            return action.data;
-        default:
-            return state;
-    }
-}
-
 function compose(...funcs) {
     if (funcs.length === 1) {
       return funcs[0]
@@ -78,10 +20,10 @@ function applyMiddleware(...middlewares) {
             
             let dispatch = store.dispatch;
             /* 实现 exception(logger(dispatch))*/
-            chain.reverse().map(middleware => {
-                dispatch = middleware(dispatch);
-            });
-            //dispatch = compose(...chain)(store.dispatch)
+            // chain.reverse().map(middleware => {
+            //     dispatch = middleware(dispatch);
+            // });
+            dispatch = compose(...chain)(store.dispatch)
             /*2. 重写 dispatch*/
             store.dispatch = dispatch;
             return store;
@@ -136,6 +78,9 @@ function createStore(reducer = {}, initialState, rewriteCreateStoreFunc) {
 
     function dispatch(action) {
         state = reducer(initialState, action);
+        console.log(state);
+        console.log(listeners);
+     
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i];
             listener();
@@ -157,38 +102,9 @@ function createStore(reducer = {}, initialState, rewriteCreateStoreFunc) {
 
     return store;
 }
-
-/**
- * 重写action.dispatch
- */
-const loggerMiddleware = (store) => (middle) => (action) => {
  
-    console.log("this state", store.getState());
-    middle(action);
-    console.log("next state", store.getState());
-}
-
-const exceptionMiddleware = (store) => (middle) => (action) => {
-    try {
-        middle(action)
-    } catch (err) {
-        console.error('错误报告: ', err)
-    }
-}
-
-const sagaMiddleware=createSagaMiddleware();
-
-const rewriteCreateStoreFunc = applyMiddleware(exceptionMiddleware,loggerMiddleware,sagaMiddleware);
-
-let store = createStore(combineReducers({
-    input: inputReducer,
-    text: textReducer,
-    data:dataReducer
-}), initialState,rewriteCreateStoreFunc);
-
-sagaMiddleware.run(watcher);
-
-export {
-    store,
-    actionsType
-}   
+export  {
+    createStore,
+    combineReducers,
+    applyMiddleware
+};
