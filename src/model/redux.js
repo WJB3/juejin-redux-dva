@@ -78,8 +78,6 @@ function createStore(reducer = {}, initialState, rewriteCreateStoreFunc) {
 
     function dispatch(action) {
         state = reducer(initialState, action);
-        console.log(state);
-        console.log(listeners);
      
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i];

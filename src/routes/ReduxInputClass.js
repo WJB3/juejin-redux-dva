@@ -1,6 +1,17 @@
 import React from 'react';
-import { connect } from './../model/component';
+import { connect } from 'react-redux';
 import { INPUT_CHANGE } from './../model/action/inputAction'
+
+
+const mapStateToProps=state=>{
+   
+    return ({
+        ...state
+     })
+};
+const mapDispatchToProps=(dispatch)=>({
+    handleChangeInput:(e)=>dispatch({type:INPUT_CHANGE,inputValue:e.target.value})
+});
 
 class ReduxInputClass extends React.Component {
 
@@ -23,18 +34,6 @@ class ReduxInputClass extends React.Component {
 
     }
 }
-
-const mapStateToProps=({input})=>{
-    console.log("mapStateToProps")
-    console.log(input)
-    return {
-        input,
-        isInitial:input.inputValue==="initial-redux"
-    }
-};
-const mapDispatchToProps=(dispatch)=>({
-    handleChangeInput:(e)=>dispatch({type:INPUT_CHANGE,inputValue:e.target.value})
-});
 
  
 export default connect(mapStateToProps,mapDispatchToProps)(ReduxInputClass);

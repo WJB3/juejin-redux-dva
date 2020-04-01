@@ -25,7 +25,8 @@ export default (mapStateToProps, mapDispatchToProps)=>(WrappedComponent)=>{
                 allProps: {
                   ...stateProps,
                   ...dispatchProps,
-                  ...this.props
+                  ...this.props,
+                  dispatch:store.dispatch
                 }
             })
         }
