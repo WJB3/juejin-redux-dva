@@ -117,7 +117,7 @@ export default function(opt={}){
         console.log(app)
         sagas.forEach(sagaMiddleware.run)
         ReactDom.render(<Provider store={app._store}>
-            <ConnectedRouter history={app._history}>
+            <ConnectedRouter history={app._history}  >
                 {app._router({app,history:app._history})}
             </ConnectedRouter>
         </Provider>,document.querySelector(container));

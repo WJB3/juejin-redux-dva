@@ -6,7 +6,6 @@ class Provider extends Component{
     constructor(props) {
         super(props);
         this.store = props.store; // 保存通过props属性注入到Provider组件的store对象
-        console.log(this.store);
     }
 
     render(){
