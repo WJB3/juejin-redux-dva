@@ -44,8 +44,6 @@ function textReducer(state, action) {
 }
 
 function dataReducer(state, action) {
-    console.log("dataReducer")
-    console.log(action)
     switch (action.type) {
         case actionsType.FETCH_DATA:
             return state;

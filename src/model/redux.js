@@ -32,21 +32,29 @@ function applyMiddleware(...middlewares) {
 }
 
 function combineReducers(reducers) {
+  
     const reducerKeys = Object.keys(reducers);
+   
     return function (state = {}, action) {
+       
         //生成新的state
         const nextState = {}
-        //遍历执行所有的reducers，整合成为一个你的state
+ 
         for (let i = 0; i < reducerKeys.length; i++) {
+           
             const key = reducerKeys[i];
+ 
             const reducer = reducers[key];
             /**
              * key对应的state
              */
             const previousStateForKey = state[key]
             const nextStateForKey = reducer(previousStateForKey, action)
+            
             nextState[key] = nextStateForKey
+            
         }
+
         return nextState;
     }
 }
@@ -71,14 +79,20 @@ function createStore(reducer = {}, initialState, rewriteCreateStoreFunc) {
         listeners.push(listener);
     }
 
+    function replaceReducer(nextReducer) {
+        reducer = nextReducer
+        /*刷新一遍 state 的值，新来的 reducer 把自己的默认状态放到 state 树上去*/
+        dispatch({ type: Symbol() })
+    }
+
     function unsubscribe(listener){
         const index=listeners.indexOf(listener);
         listeners.splice(index,1);
     }
 
     function dispatch(action) {
+        
         state = reducer(initialState, action);
-     
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i];
             listener();
@@ -95,7 +109,8 @@ function createStore(reducer = {}, initialState, rewriteCreateStoreFunc) {
         getState,
         dispatch,
         subscribe,
-        unsubscribe
+        unsubscribe,
+        replaceReducer
     }
 
     return store;

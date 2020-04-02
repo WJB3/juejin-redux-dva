@@ -25,7 +25,6 @@ const effects={
  * dispatch对应的action时，调用对应的异步处理方式
  */
 function* watcher(){
-    console.log("soga watcher");
     yield takeEvery(actionsType.FETCH_DATA,effects.fetchData);
 }
 

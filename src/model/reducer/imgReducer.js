@@ -6,7 +6,6 @@ const initialState = {
 
 
 export default function dataReducer(state=initialState, action) {
-   console.log(action)
     switch (action.type) {
         case FETCH_DATA:
             return state;

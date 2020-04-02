@@ -1,10 +1,11 @@
 import dva from './dva';
+import DvaLoading from './plugins/loading';
 
 // 1. Initialize
 const app = dva();
 
-// 2. Plugins
-// app.use({});
+//2. Plugins
+app.use(DvaLoading());
 
 // 3. Model
 app.model(require('./models/global').default);
