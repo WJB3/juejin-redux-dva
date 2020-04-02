@@ -1,8 +1,14 @@
 import dva from './dva';
 import DvaLoading from './plugins/loading';
+import DvaLogger from './plugins/logger';
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+    onAction:DvaLogger(),
+    onStateChange(state){
+        localStorage.setItem('state', JSON.stringify(state))
+    }
+});
 
 //2. Plugins
 app.use(DvaLoading());

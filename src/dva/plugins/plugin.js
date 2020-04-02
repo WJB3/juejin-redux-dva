@@ -1,6 +1,6 @@
 const hooks=[
     "onEffect",//effect中间件
-    "extraReducers"//添加reducer
+    "extraReducers",//添加reducer
 ];
 
 export function filterHooks(options){//筛选符合钩子名的配置项

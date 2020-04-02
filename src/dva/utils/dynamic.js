@@ -3,7 +3,7 @@ const DefaultLoadingComponent = props => <div>加载中</div>
 
 export default function dynamic(config){
     let {app,models,component} =config;
-    return class Test extends React.Component{
+    return class NewComponent extends React.Component{
         constructor(props){
             super(props)
             this.LoadingComponent = config.LoadingComponent || DefaultLoadingComponent
@@ -21,7 +21,7 @@ export default function dynamic(config){
         }
 
         render(){
-            let { AsyncComponent  }=this.state;
+            let { AsyncComponent }=this.state; 
             let { LoadingComponent  }=this;
             return (
                 AsyncComponent ? <AsyncComponent {...this.props}></AsyncComponent> : <LoadingComponent></LoadingComponent>
